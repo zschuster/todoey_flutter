@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:todoeyflutter/models/task_bank.dart';
+import 'package:todoeyflutter/screens/add_task_screen.dart';
+import 'package:todoeyflutter/widgets/task_list.dart';
+import 'package:provider/provider.dart';
 
-class TaskScreen extends StatelessWidget {
+class TaskScreen extends StatefulWidget {
+  @override
+  _TaskScreenState createState() => _TaskScreenState();
+}
+
+class _TaskScreenState extends State<TaskScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +19,17 @@ class TaskScreen extends StatelessWidget {
         child: Icon(Icons.add),
         backgroundColor: Colors.lightBlueAccent,
         onPressed: () {
-
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) => SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: AddTaskScreen(),
+              ),
+            ),
+          );
         },
       ),
       body: Column(
@@ -46,7 +66,7 @@ class TaskScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '12 tasks',
+                  '${Provider.of<TaskBank>(context).taskCount} tasks',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -60,6 +80,8 @@ class TaskScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
+              padding: EdgeInsets.all(15.0),
+              child: TaskList(),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
